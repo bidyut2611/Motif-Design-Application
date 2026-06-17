@@ -30,30 +30,30 @@ export function useGrid(initialSize = 16) {
     });
   }, [activeTool, activeColor]);
 
-  const onMouseDown = (index: number) => {
+  const onMouseDown = useCallback((index: number) => {
     setIsDrawing(true);
     handleCellAction(index);
-  };
+  }, [handleCellAction]);
 
-  const onMouseEnter = (index: number) => {
+  const onMouseEnter = useCallback((index: number) => {
     if (isDrawing) {
       handleCellAction(index);
     }
-  };
+  }, [isDrawing, handleCellAction]);
 
-  const onMouseUp = () => {
+  const onMouseUp = useCallback(() => {
     setIsDrawing(false);
-  };
+  }, []);
 
-  const clearCanvas = () => {
+  const clearCanvas = useCallback(() => {
     setGrid(Array(size * size).fill(''));
-  };
+  }, [size]);
 
-  const loadGrid = (newGrid: string[]) => {
+  const loadGrid = useCallback((newGrid: string[]) => {
     if (newGrid.length === size * size) {
-      setGrid(newGrid);
+      setGrid([...newGrid]);
     }
-  };
+  }, [size]);
 
   return {
     size,

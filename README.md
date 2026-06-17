@@ -1,51 +1,119 @@
 # Motif Design Application
 
-This repository contains the Motif Design Application, built as a functional prototype using **React**, **Vite**, and **TypeScript**. 
+A grid-based motif design application for handloom pattern creation, built with **React**, **Vite**, and **TypeScript**.
+
+---
 
 ## Features
-- **Grid-Based Editor:** A fully interactive 16x16 grid canvas with drawing, erasing, and clearing capabilities. Supports click/tap and drag-to-draw interactions.
-- **Color Selection:** Palette including Black, Red, Blue, Green, and Yellow.
-- **Live Price Estimation:** Dynamic calculation of pattern cost based on complexity, size, and colors used.
-- **Handover PDF Generation:** Generates a high-quality PDF containing the motif preview, order details, and user notes.
-- **Motif Library & Saved Designs:** Preloaded traditional patterns and local storage for saving, editing, and duplicating your creations.
-- **Premium Aesthetics:** Clean, modern UI styled entirely with Vanilla CSS.
+
+| Question | Feature | Status |
+|----------|---------|--------|
+| Q1 | Grid-Based Motif Editor (16×16, tap/drag/erase/clear) | ✅ |
+| Q2 | Color Selection & Editing Tools (5 colors, Draw/Erase/Clear) | ✅ |
+| Q3 | Home Screen & Navigation | ✅ |
+| Q4 | Live Price Estimation | ✅ |
+| Q5 | Order Handover PDF | ✅ |
+| Q6 | Motif Library (3 presets, load/edit/save) | ✅ |
+| Q7 | Saved Designs (save/open/duplicate/delete) | ✅ |
+| Q8 | Share Design (export image/data/PDF) | ✅ |
+
+---
 
 ## Setup Instructions
 
-Ensure you have Node.js (v18+) installed.
+**Prerequisites:** Node.js v18+ and npm.
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+```bash
+# 1. Install dependencies
+npm install
 
-2. Start the development server:
-   ```bash
-   npm run dev
-   ```
+# 2. Start the development server
+npm run dev
 
-3. Build for production:
-   ```bash
-   npm run build
-   ```
+# 3. Open in browser
+# http://localhost:5173
+```
+
+To build for production:
+```bash
+npm run build
+```
+
+---
 
 ## Price Estimation Logic
 
-The application calculates the price in real-time using a deterministic algorithm:
+The price is calculated **live** as the user designs on the canvas using the following deterministic formula:
 
-`Final Price = Base Price + Color Charge + Complexity Charge + Size Charge`
+```
+Final Price = Base Price + Color Charge + Complexity Charge + Size Charge
+```
 
-- **Base Price:** A fixed starting cost of **₹500**.
-- **Color Charge:** **₹100** per unique color used in the design.
-- **Complexity Charge:** **₹2** per filled cell (denser patterns cost more).
-- **Size Charge:** For this iteration, the canvas is fixed at 16x16, so the size charge is **₹0**. If the canvas size increases, an additional formula `(size - 16) * 50` can be applied.
+| Component | Calculation | Example |
+|-----------|-------------|---------|
+| **Base Price** | Fixed ₹500 | ₹500 |
+| **Color Charge** | ₹100 × number of unique colors used | 3 colors → ₹300 |
+| **Complexity Charge** | ₹2 × number of filled cells | 80 cells → ₹160 |
+| **Size Charge** | ₹50 × (size − 16) if size > 16, else ₹0 | 16×16 → ₹0 |
 
-The calculation happens dynamically through a reactive state hook (`useGrid`) that analyzes the grid array.
+**Key rules from the assignment:**
+- A design using **more colors** costs more → Color Charge scales linearly.
+- A **denser/more intricate** pattern costs more → Complexity Charge scales with filled cells.
+- A **larger motif** costs more → Size Charge activates above 16×16.
 
-## Data Structure
+The formula is implemented in [`src/utils/pricing.ts`](src/utils/pricing.ts).
 
-The grid canvas state is managed as a **1D Array of Strings** (`string[]`). 
-- The array has a fixed length of `size * size` (256 for a 16x16 grid).
-- Each element represents a cell and stores a **Hex Color Code** (e.g., `"#3b82f6"`) if colored, or an empty string `""` if blank.
-- The 1D array is mapped to a CSS Grid layout natively, ensuring efficient O(1) state updates when rendering without needing complex nested mapping logic.
-- When saved, the array and its metadata are serialized to JSON and stored in the browser's `localStorage`.
+---
+
+## Data Structure — Grid Canvas
+
+The grid state is represented as a **flat 1D array of strings** (`string[]`):
+
+```typescript
+const grid: string[] = Array(size * size).fill('');
+// For 16×16: an array of 256 elements
+```
+
+| Aspect | Detail |
+|--------|--------|
+| **Length** | `size × size` (256 for 16×16) |
+| **Cell value** | Hex color string (e.g., `"#ef4444"`) if filled, empty string `""` if blank |
+| **Indexing** | `index = row * size + col` — row-major order |
+| **Rendering** | Mapped directly to CSS Grid with `grid-template-columns: repeat(16, 1fr)` |
+| **Persistence** | Serialized as JSON and stored in `localStorage` |
+
+**Why 1D instead of 2D?**
+- O(1) access by index.
+- Simpler state updates (spread `[...grid]` + single index assignment).
+- Direct mapping to CSS Grid layout without nested iteration.
+- Efficient JSON serialization for local storage and export.
+
+The grid hook is implemented in [`src/hooks/useGrid.ts`](src/hooks/useGrid.ts).
+
+---
+
+## User Flow
+
+```
+Home Screen
+├── Create New Design → Grid Editor → Draw/Erase/Clear → Color Selection
+│                                   → Live Price Estimation
+│                                   → Generate Handover PDF
+│                                   → Share (Image / JSON / PDF)
+│                                   → Save Design
+├── Saved Designs → Open / Duplicate / Delete
+└── Motif Library → Select Preset → Edit → Save as New Design
+```
+
+---
+
+## Tech Stack
+
+- **React 19** — UI library
+- **Vite 8** — Build tool & dev server
+- **TypeScript** — Type safety
+- **React Router** — Client-side routing
+- **html2canvas** — Canvas-to-image conversion for PDF/PNG export
+- **jsPDF** — PDF generation
+- **Lucide React** — Icon library
+- **Vanilla CSS** — All styling (no CSS frameworks)
