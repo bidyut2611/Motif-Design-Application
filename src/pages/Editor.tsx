@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Eraser, PenTool, Trash2, Download, Save, Share2, Image, FileJson } from 'lucide-react';
-import { useGrid, COLORS, Color } from '../hooks/useGrid';
+import { useGrid, COLORS } from '../hooks/useGrid';
+import type { Color } from '../hooks/useGrid';
 import { calculatePrice } from '../utils/pricing';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
