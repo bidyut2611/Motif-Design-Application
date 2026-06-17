@@ -1,0 +1,201 @@
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--bg-color);
+}
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 30px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.design-name-input {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 5px 15px;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.design-name-input:hover, .design-name-input:focus {
+  border-color: var(--border);
+  background: rgba(0,0,0,0.2);
+  outline: none;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.editor-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  padding: 20px;
+  gap: 20px;
+  justify-content: center;
+}
+
+.toolbar {
+  width: 200px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.tool-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tool-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.tool-btn:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.tool-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+.tool-btn.danger:hover {
+  background: var(--danger);
+  color: white;
+}
+
+.color-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.color-swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: transform 0.2s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.color-swatch.active {
+  border-color: white;
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.canvas-container {
+  flex: 1;
+  max-width: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 20px;
+  overflow: auto;
+}
+
+.grid-canvas {
+  display: grid;
+  width: min(600px, 100%);
+  aspect-ratio: 1;
+  background-color: var(--grid-border);
+  gap: 1px;
+  border: 1px solid var(--grid-border);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  user-select: none;
+}
+
+.grid-cell {
+  background-color: var(--grid-bg);
+  cursor: crosshair;
+  transition: background-color 0.1s;
+}
+
+.grid-cell:hover {
+  opacity: 0.8;
+}
+
+.sidebar {
+  width: 280px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-widget {
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.price-total {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--success);
+  margin: 10px 0 20px 0;
+}
+
+.price-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 5px;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+textarea {
+  width: 100%;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+  resize: vertical;
+  margin-top: 10px;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
